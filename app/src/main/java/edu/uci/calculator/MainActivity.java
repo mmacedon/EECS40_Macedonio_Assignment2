@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         double value;
         boolean flag = true;
 
+        if ( input == "" ) { input = output; }
         for ( int i = 0; i < input.length(); i++ )
         {
             if ( (input.charAt ( i ) == 'x' ||
@@ -187,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
             percentflag = false;
             tracker = '\0';
             input = output;
-            output = "";
+           // output = "";
             return;
         }
 
@@ -197,9 +198,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void Delete ( View view )
     {
+        //tracker = input.charAt( input.length() - 1 );
+        if ( input == "" ) { return; }
         input = input.substring( 0, input.length() - 1 );
-        tracker = '\0';
         toScreen( input );
+        tracker = '\0';
     }
 
     public void ClearAll ( View view )
@@ -220,16 +223,18 @@ public class MainActivity extends AppCompatActivity {
         Double temp;
         char op;
         boolean flag = true;
+        int counter = 0;
+
+        if ( input == "" ) { input = output; }
 
         if ( input.charAt( 0 ) == 'x' || input.charAt( 0 ) == '-'
                 || input.charAt ( 0 ) == '+' || input.charAt( 0 ) == '/' ||
                 input.charAt( input.length() - 1 ) == 'x' || input.charAt( input.length() - 1 ) == '-'
                 || input.charAt ( input.length() - 1 ) == '+'
                 || input.charAt( input.length() - 1 ) == '/' )
-        {
-            toScreen ( "INVALID SYNTAX!" );
-            return;
-        }
+        {    toScreen ( "INVALID SYNTAX!" );
+        return;}
+
 
         for ( int i = 0; i < input.length(); i++ )
         {
@@ -257,6 +262,23 @@ public class MainActivity extends AppCompatActivity {
             output = input;
             toScreen( output );
             return;
+        }
+
+        for ( int i = 0; i < valuesbuffer.length; i++ )
+        {
+            counter = 0;
+            for ( int j = 0; j < valuesbuffer [ i ].length(); j++ )
+            {
+                if ( valuesbuffer [ i ].charAt( j ) == '.' )
+                {
+                    counter++;
+                    if ( counter > 1)
+                    {
+                        toScreen("SYNTAX ERROR!");
+                        return;
+                    }
+                }
+            }
         }
 
         for ( int i = 0; i < valuesbuffer.length; i++ )
@@ -358,6 +380,6 @@ public class MainActivity extends AppCompatActivity {
         toScreen( output );
         tracker = '\0';
         input = "";
-        output = "";
+        //output = "";
     }
 }
